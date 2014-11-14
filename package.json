@@ -1,8 +1,8 @@
 {
   "name": "generator-web-lyk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Yo generator for leyingke.com",
-  "main": "index.js",
+  "main": "app/index.js",
   "scripts": {
     "test": "grunt test"
   },
@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/yanni4night/generator-web-lyk/issues"
   },
-  "homepage": "https://github.com/yanni4night/generator-web-lyk"
+  "homepage": "https://github.com/yanni4night/generator-web-lyk",
+  "dependencies": {
+    "chalk": "^0.5.1",
+    "yeoman-generator": "^0.18.0"
+  }
 }
