@@ -1,0 +1,27 @@
+{
+  "name": "generator-web-lyk",
+  "version": "1.0.0",
+  "description": "Yo generator for leyingke.com",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yanni4night/generator-web-lyk.git"
+  },
+  "keywords": [
+    "yeoman-generator",
+    "leyingke",
+    "lyk",
+    "yo",
+    "grunt",
+    "bower"
+  ],
+  "author": "yanni4night@gmail.com",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/yanni4night/generator-web-lyk/issues"
+  },
+  "homepage": "https://github.com/yanni4night/generator-web-lyk"
+}
