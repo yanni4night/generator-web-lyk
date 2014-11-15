@@ -135,18 +135,17 @@ module.exports = generators.Base.extend({
         this.copy('bowerrc', '.bowerrc');
         this.write('bower.json', JSON.stringify(bower, null, 2));
     },
-    static:function() {
+    static: function() {
         this.directory('static');
     },
-    stylesheet: function(){
-        if (this.includeLess) {
-            this.copy('index.less', 'static/css/index.less');
-        } else {
-            this.copy('index.css', 'static/css/index.css');
-        }
+    stylesheet: function() {
+            this.template('index.css', 'static/css/index.' + (this.includeLess ? 'le' : 'c') + 'ss');
+    },
+    javascript:function(){
+            this.template('index.js', 'static/js/index.js');        
     }
-    /*,
-        gruntfile: function() {
-            this.template('Gruntfile.js');
-        }*/
+        /*,
+            gruntfile: function() {
+                this.template('Gruntfile.js');
+            }*/
 });

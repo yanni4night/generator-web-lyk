@@ -1,1 +1,5 @@
+<% if (includeLess) {%>
+@import (inline) "./lib/css-reset";
+<%}else{%>
 @import "./lib/css-reset.css";
+<%}%>
