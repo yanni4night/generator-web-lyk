@@ -30,10 +30,10 @@ module.exports = generators.Base.extend({
             type: 'checkbox',
             name: 'features',
             message: 'What more would you like?',
-            validate:function(input){
+            validate: function(input) {
                 var selects = Array.prototype.join.call(arguments);
 
-                if(~selects.indexOf('includeRequirejs') && ~selects.indexOf('includeBrowserify')){
+                if (~selects.indexOf('includeRequirejs') && ~selects.indexOf('includeBrowserify')) {
                     return chalk.red('You cannot use Requirejs and Browerify at the same time');
                 }
                 return true;
@@ -147,13 +147,18 @@ module.exports = generators.Base.extend({
         this.directory('static');
     },
     stylesheet: function() {
-            this.template('index.css', 'static/css/index.' + (this.includeLess ? 'le' : 'c') + 'ss');
+        this.template('index.css', 'static/css/index.' + (this.includeLess ? 'le' : 'c') + 'ss');
     },
-    javascript:function(){
-            this.template('index.js', 'static/js/index.js');        
+    javascript: function() {
+        this.template('index.js', 'static/js/index.js');
+    },
+    html: function() {
+        this.mkdir('template');
+        this.template('index.html', 'template/' + (this.includeSwig ? 'parent' : 'index') + '.html');
     }
-        /*,
-            gruntfile: function() {
-                this.template('Gruntfile.js');
-            }*/
+
+    /*,
+                gruntfile: function() {
+                    this.template('Gruntfile.js');
+                }*/
 });

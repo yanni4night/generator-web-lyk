@@ -1,0 +1,22 @@
+<!doctype html>
+<html<%if (includeAngularjs){ %> ng-app="<%= _.slugify(appname) %>"<% } %>>
+  <head>
+    <meta charset="utf-8">
+    <title><% if (includeSwig){ %>{%block title%}<%=appname%>{%endblock%}<%}else{%><%=appname%><% } %></title>
+    <meta name="keywords" content="<% if (includeSwig){ %>{%block keywords%}{%endblock%}<% } %>"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <!-- bower:css -->
+    <!-- endbower -->
+    <link rel="stylesheet" href="/static/css/index.css"/>
+    <% if (includeSwig){ %>{%block head%}{%endblock%}<% } %>
+  </head>
+  <body>
+    <% if (includeSwig){ %>{%block content%}{%endblock%}<% } %>
+    <!-- bower:js -->
+    <!-- endbower -->
+     <% if (includeSwig){ %>{%block tail%}{%endblock%}<% } %>
+    <script src="/static/js/index.js"></script>
+  </body>
+</html>
