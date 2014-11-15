@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/yanni4night/generator-web-lyk",
   "dependencies": {
-    "chalk": "^0.5.1",
-    "yeoman-generator": "^0.18.0"
+    "chalk": "~0.5.1",
+    "yeoman-generator": "~0.17.7"
   }
 }

@@ -1,0 +1,39 @@
+/**
+  * Copyright (C) 2014 yanni4night.com
+  * common.css
+  *
+  * Quick functional class.
+  *
+  * changelog
+  * 2014-11-15[17:10:43]:revised
+  *
+  * @author yanni4night@gmail.com
+  * @version 0.1.0
+  * @since 0.1.0
+  */
+.fl{float: left;}
+.fr{float: right;}
+.ib{display: inline-block;*display: inline;*zoom:1;}
+.b{display: block;}
+.i{display: inline;}
+.p0,.fz0{font-size: 0;}
+.p12{font-size: 12px;}
+.p14{font-size: 14px;}
+.p16{font-size: 16px;}
+.p18{font-size: 18px;}
+.p20{font-size: 20px;}
+.p22{font-size: 22px;}
+.re{position: relative;}
+.ab{position: absolute;}
+.lt0{left: 0;top: 0;}
+.rt0{right: 0;top: 0;}
+.lb0{left: 0;bottom: 0;}
+.rb0{right: 0;bottom: 0;}
+.black{color: #000;}
+.white{color: #fff;}
+.hide{display: none !important;}
+.w-fil{width: 100%;}
+.h-fil{height: 100%;}
+.cl::after,.claf{clear: both;display: block;height: 0;font-size: 0;}
+.pd10{padding: 10px;}
+.mg10{margin: 10px;}

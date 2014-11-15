@@ -113,7 +113,7 @@ module.exports = generators.Base.extend({
         this.template('_package.json', 'package.json');
     },
     jshint: function() {
-        this.copy('jshintrc', '.jshintrc');
+        this.template('jshintrc', '.jshintrc');
     },
     editorConfig: function() {
         this.copy('editorconfig', '.editorconfig');
@@ -122,7 +122,9 @@ module.exports = generators.Base.extend({
         var bower = {
             name: this._.slugify(this.appname),
             private: true,
-            dependencies: {}
+            dependencies: {
+                "reset-css":"~2.0.20110126"
+            }
         };
 
         if (this.includeAngularjs) {
@@ -130,7 +132,7 @@ module.exports = generators.Base.extend({
         }
 
         if (this.includeJquery) {
-            bower.dependencies.angular = this.useJquery1x ? "~1.11.1" : "2.1.1";
+            bower.dependencies.jquery = this.useJquery1x ? "~1.11.1" : "2.1.1";
         }
 
         if (this.includeRequirejs) {
@@ -155,10 +157,11 @@ module.exports = generators.Base.extend({
     html: function() {
         this.mkdir('template');
         this.template('index.html', 'template/' + (this.includeSwig ? 'parent' : 'index') + '.html');
+    },
+    gruntfile: function() {
+        this.template('Gruntfile.js');
+    },
+    install:function(){
+        this.installDependencies();
     }
-
-    /*,
-                gruntfile: function() {
-                    this.template('Gruntfile.js');
-                }*/
 });
