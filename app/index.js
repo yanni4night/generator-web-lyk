@@ -16,6 +16,7 @@ var generators = require('yeoman-generator');
 var chalk = require('chalk');
 
 module.exports = generators.Base.extend({
+    build: 'build',
     constructor: function() {
         generators.Base.apply(this, arguments);
 
@@ -25,13 +26,17 @@ module.exports = generators.Base.extend({
 
         var done = this.async();
 
-        var prompts = {
+        var prompts = [{
             type: 'checkbox',
             name: 'features',
             message: 'What more would you like?',
             choices: [{
                 name: 'Less',
                 value: 'includeLess',
+                checked: true
+            }, {
+                name: 'jQuery',
+                value: 'includeJquery',
                 checked: true
             }, {
                 name: 'Browserify',
@@ -50,7 +55,27 @@ module.exports = generators.Base.extend({
                 value: 'includeSwig',
                 checked: false
             }]
-        };
+        }, {
+            when: function(answers) {
+                return answers && answers.features &&
+                    ~answers.features.indexOf('includeJquery');
+            },
+            type: 'confirm',
+            name: 'jquery1.x',
+            value: 'jquery1.x',
+            message: 'Would you like to use jQuery 1.x for old browers?',
+            default: true
+        }, {
+            when: function(answers) {
+                return answers && answers.features &&
+                    ~answers.features.indexOf('includeRequirejs');
+            },
+            type: 'confirm',
+            name: 'requirejs-text',
+            value: 'includeRequirejsText',
+            message: 'Would you like to use the text plugin for Requirejs?',
+            default: true
+        }];
 
         this.prompt(prompts, function(answers) {
             var features = answers.features;
@@ -63,9 +88,56 @@ module.exports = generators.Base.extend({
             this.includeBrowserify = hasFeature('includeBrowserify');
             this.includeAngularjs = hasFeature('includeAngularjs');
             this.includeRequirejs = hasFeature('includeRequirejs');
+            this.includeJquery = hasFeature('includeJquery');
             this.includeSwig = hasFeature('includeSwig');
+
+            this.useJquery1x = answers['jquery1.x'];
+            this.includeRequirejsText = answers['requirejs-text'];
 
             done();
         }.bind(this));
-    }
+    },
+    git: function() {
+        this.template('gitignore', '.gitignore');
+        this.copy('gitattributes', '.gitattributes');
+    },
+    packageJSON: function() {
+        this.template('_package.json', 'package.json');
+    },
+    jshint: function() {
+        this.copy('jshintrc', '.jshintrc');
+    },
+    editorConfig: function() {
+        this.copy('editorconfig', '.editorconfig');
+    },
+    bower: function() {
+        var bower = {
+            name: this._.slugify(this.appname),
+            private: true,
+            dependencies: {}
+        };
+
+        if (this.includeAngularjs) {
+            bower.dependencies.angular = "~1.3.2";
+        }
+
+        if (this.includeJquery) {
+            bower.dependencies.angular = this.useJquery1x ? "~1.11.1" : "2.1.1";
+        }
+
+        if (this.includeRequirejs) {
+            bower.dependencies.requirejs = "~2.1.15";
+            if (this.includeRequirejsText) {
+                bower.dependencies['requirejs-text'] = "~2.0.12";
+            }
+        }
+
+        this.copy('bowerrc', '.bowerrc');
+        this.write('bower.json', JSON.stringify(bower, null, 2));
+    },
+
+    /*,
+        gruntfile: function() {
+            this.template('Gruntfile.js');
+        }*/
 });

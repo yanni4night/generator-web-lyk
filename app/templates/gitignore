@@ -1,0 +1,7 @@
+node_modules
+<%=build%>
+.tmp
+bower_components
+._*
+*DS_Store
+.swp
