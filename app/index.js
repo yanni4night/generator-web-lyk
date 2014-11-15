@@ -30,6 +30,14 @@ module.exports = generators.Base.extend({
             type: 'checkbox',
             name: 'features',
             message: 'What more would you like?',
+            validate:function(input){
+                var selects = Array.prototype.join.call(arguments);
+
+                if(~selects.indexOf('includeRequirejs') && ~selects.indexOf('includeBrowserify')){
+                    return chalk.red('You cannot use Requirejs and Browerify at the same time');
+                }
+                return true;
+            },
             choices: [{
                 name: 'Less',
                 value: 'includeLess',
