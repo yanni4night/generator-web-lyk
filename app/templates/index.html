@@ -2,21 +2,21 @@
 <html<%if (includeAngularjs){ %> ng-app="<%= _.slugify(appname) %>"<% } %>>
   <head>
     <meta charset="utf-8">
-    <title><% if (includeSwig){ %>{%block title%}<%=appname%>{%endblock%}<%}else{%><%=appname%><% } %></title>
-    <meta name="keywords" content="<% if (includeSwig){ %>{%block keywords%}{%endblock%}<% } %>"/>
+    <title><% if (includeSwig || includeDjango){ %>{%block title%}<%=appname%>{%endblock%}<%}else{%><%=appname%><% } %></title>
+    <meta name="keywords" content="<% if (includeSwig || includeDjango){ %>{%block keywords%}{%endblock%}<% } %>"/>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <link rel="shortcut icon" href="/static/img/favicon.ico">
     <!-- bower:css -->
     <!-- endbower -->
     <link rel="stylesheet" href="/static/css/index.css"/>
-    <% if (includeSwig){ %>{%block head%}{%endblock%}<% } %>
+    <% if (includeSwig || includeDjango){ %>{%block head%}{%endblock%}<% } %>
   </head>
   <body>
-    <% if (includeSwig){ %>{%block content%}{%endblock%}<% } %>
+    <% if (includeSwig || includeDjango){ %>{%block content%}{{title}}{%endblock%}<% } %>
     <!-- bower:js -->
     <!-- endbower -->
-     <% if (includeSwig){ %>{%block tail%}{%endblock%}<% } %>
+     <% if (includeSwig || includeDjango){ %>{%block tail%}{%endblock%}<% } %>
     <script src="/static/js/index.js"></script>
   </body>
 </html>

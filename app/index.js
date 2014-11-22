@@ -36,6 +36,10 @@ module.exports = generators.Base.extend({
                 if (~selects.indexOf('includeRequirejs') && ~selects.indexOf('includeBrowserify')) {
                     return chalk.red('You cannot use Requirejs and Browerify at the same time');
                 }
+
+                if ((selects.match(/include(?:Swig|Django)/g) || []).length !== 1) {
+                    return chalk.red('You have to choose one between Swig and Django as the template engine for Express.js');
+                }
                 return true;
             },
             choices: [{
@@ -62,6 +66,10 @@ module.exports = generators.Base.extend({
                 name: 'Swig',
                 value: 'includeSwig',
                 checked: false
+            }, {
+                name: 'Django',
+                value: 'includeDjango',
+                checked: true
             }]
         }, {
             when: function(answers) {
@@ -98,6 +106,7 @@ module.exports = generators.Base.extend({
             this.includeRequirejs = hasFeature('includeRequirejs');
             this.includeJquery = hasFeature('includeJquery');
             this.includeSwig = hasFeature('includeSwig');
+            this.includeDjango = hasFeature('includeDjango');
 
             this.useJquery1x = answers['jquery1.x'];
             this.includeRequirejsText = answers['requirejs-text'];
@@ -123,7 +132,7 @@ module.exports = generators.Base.extend({
             name: this._.slugify(this.appname),
             private: true,
             dependencies: {
-                "reset-css":"~2.0.20110126"
+                "reset-css": "~2.0.20110126"
             }
         };
 
@@ -156,12 +165,21 @@ module.exports = generators.Base.extend({
     },
     html: function() {
         this.mkdir('template');
-        this.template('index.html', 'template/' + (this.includeSwig ? 'parent' : 'index') + '.html');
+        this.template('index.html', 'template/index.html');
     },
     gruntfile: function() {
         this.template('Gruntfile.js');
     },
-    install:function(){
+    bin: function() {
+        this.template('bin/www');
+    },
+    routes: function() {
+        this.directory('routes');
+    },
+    app: function() {
+        this.template('app.js');
+    },
+    install: function() {
         this.installDependencies();
     }
 });
