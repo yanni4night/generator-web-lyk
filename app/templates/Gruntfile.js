@@ -37,21 +37,31 @@ module.exports = function(grunt) {
         files: ['bower.json'],
         tasks: ['wiredep']
       },
+      imagemin:{
+        files: ['<%%= config.static %>/img/{,*/}*.{png,jpg,gif}'],
+        tasks: ['imagemin']
+      },
       js: {
         files: ['<%%= config.static %>/js/{,*/}*.js'],
-        tasks: ['jshint']
+        tasks: ['jshint',
+        <% if (includeBrowserify){%>
+          'browserify'
+        <% } else if (includeRequirejs) {%>
+          'requirejs'
+        <% } else { %>
+          'uglify'
+        <% } %>
+        ]
       },
       less: {
-        files: ['<%%= config.static %>/css/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
+        files: ['<%%= config.static %>/css/{,*/}*.less'],
+        tasks: ['less', 'autoprefixer']
       }
     },
-
     // Empties folders to start fresh
     clean: {
       dist: ['<%%= config.dist %>']
     },
-
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
       options: {
@@ -63,8 +73,7 @@ module.exports = function(grunt) {
         '<%%= config.static %>/js/{,*/}*.js'
       ]
     },
-    <%
-    if (includeLess) { %>
+    <% if (includeLess) { %>
       less: {
         options: {
           compress: false
@@ -76,18 +85,16 @@ module.exports = function(grunt) {
           dest: '<%%= config.dist %>',
           ext: '.css'
         }
-      }, <%
-    } else { %>
+      }, <% } else { %>
       //use yui to compress css
-      cssmin: {
-        dist: {
-          expand: true,
-          cwd: '.',
-          src: ['<%%= config.static %>/css/{,*/}/*.css'],
-          dest: '<%%= config.dist %>'
-        }
-      }, <%
-    } %>
+    cssmin: {
+      dist: {
+        expand: true,
+        cwd: '.',
+        src: ['<%%= config.static %>/css/{,*/}/*.css'],
+        dest: '<%%= config.dist %>'
+      }
+    }, <% } %>
     // Add vendor prefixed styles
     autoprefixer: {
       options: {
@@ -102,51 +109,47 @@ module.exports = function(grunt) {
         }]
       }
     },
-
     // Automatically inject Bower components into the HTML file
     wiredep: {
       app: {
-        src: ['<%%= config.tpl %>/*.html']
+        ignorePath: /^\.\./,
+        src: ['<%%= config.tpl %>/{,*/}*.html']
       }
     },
-    <%
-    if (includeBrowserify) { %>
-      browserify: {
-          dist: {
-            expand: true,
-            cwd: '.',
-            src: ['<%%= config.static %>/js/{,*/}/*.js'],
-            dest: '<%%= config.dist %>'
-          }
-        },
-        uglify: {
-          dist: {
-            expand: true,
-            cwd: '<%%= config.dist %>',
-            src: ['<%%= config.static %>/js/{,*/}/*.js'],
-            dest: '<%%= config.dist %>'
-          }
-        }, <%
-    } else if (includeRequirejs) { %>
-      requirejs: {
-        compile: {
-          options: {
-            baseUrl: '<%%= config.static %>/js',
-            name: 'index',
-            out: '<%%= config.dist %>/<%%= config.static %>/js/index.js'
-          }
-        }
-      }, <%
-    } else { %>
-      uglify: {
+    <% if (includeBrowserify) { %>
+    browserify: {
         dist: {
           expand: true,
           cwd: '.',
           src: ['<%%= config.static %>/js/{,*/}/*.js'],
           dest: '<%%= config.dist %>'
         }
-      }, <%
-    } %>
+      },
+      uglify: {
+        dist: {
+          expand: true,
+          cwd: '<%%= config.dist %>',
+          src: ['<%%= config.static %>/js/{,*/}/*.js'],
+          dest: '<%%= config.dist %>'
+        }
+      }, <% } else if (includeRequirejs) { %>
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: '<%%= config.static %>/js',
+          name: 'index',
+          out: '<%%= config.dist %>/<%%= config.static %>/js/index.js'
+        }
+      }
+    }, <% } else { %>
+    uglify: {
+      dist: {
+        expand: true,
+        cwd: '.',
+        src: ['<%%= config.static %>/js/{,*/}/*.js'],
+        dest: '<%%= config.dist %>'
+      }
+    }, <% } %>
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
@@ -170,21 +173,19 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', [
     'clean',
-    'jshint', <%
-    if (includeBrowserify) { %>
-      'browserify', <%
-    } else if (includeRequirejs) { %>
-      'requirejs', <%
-    } else { %>
-      'uglify', <%
-    } %>
-
-    <%
-    if (includeLess) { %>
-      'less', <%
-    } else { %>
-      'cssmin', <%
-    } %>
+    'jshint',
+    <% if (includeBrowserify) { %>
+      'browserify',
+    <% } else if (includeRequirejs) { %>
+      'requirejs',
+    <% } else { %>
+      'uglify',
+    <% } %>
+    <% if (includeLess) { %>
+      'less',
+    <% } else { %>
+      'cssmin',
+    <% } %>
     'autoprefixer',
     'imagemin',
     'wiredep',
