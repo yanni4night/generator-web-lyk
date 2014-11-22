@@ -71,7 +71,7 @@ module.exports = generators.Base.extend({
             type: 'confirm',
             name: 'jquery1.x',
             value: 'jquery1.x',
-            message: 'Would you like to use jQuery 1.x for old browers?',
+            message: 'Would you like to use jQuery 1.x for old browsers?',
             default: true
         }, {
             when: function(answers) {
